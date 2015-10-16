@@ -526,7 +526,7 @@ void StringTestFixture::testRawDecodeUtf16()
 
 void StringTestFixture::testRawEncodeUtf16()
 {
-    utf16String r;
+    std::u16string r;
     CharacterAdder<char16_t> a(r);
 
     rawEncodeUtf16(0xFFFF, a);          // ffff
@@ -810,7 +810,7 @@ void StringTestFixture::testIsUcs2AsAscii()
     // empty string, bad target encoding
     CPPUNIT_ASSERT(isUcs2(0, kAscii));
     CPPUNIT_ASSERT(isUcs2(nullString, kAscii));
-    CPPUNIT_ASSERT(isUcs2(ucs2String(), kAscii));
+    CPPUNIT_ASSERT(isUcs2(std::u16string(), kAscii));
     CPPUNIT_ASSERT(!isUcs2(0, static_cast<EncodingType>(kUnicode + 1)));
 
     char16_t ucs2AsAsciiGood[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
@@ -893,7 +893,7 @@ void StringTestFixture::testIsUtf16AsAscii()
     // empty string, bad target encoding
     CPPUNIT_ASSERT(isUtf16(0, kAscii));
     CPPUNIT_ASSERT(isUtf16(nullString, kAscii));
-    CPPUNIT_ASSERT(isUcs2(utf16String(), kAscii));
+    CPPUNIT_ASSERT(isUcs2(std::u16string(), kAscii));
     CPPUNIT_ASSERT(!isUtf16(0, static_cast<EncodingType>(kUnicode + 1)));
 
     char16_t utf16AsAsciiGood[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
@@ -983,7 +983,7 @@ void StringTestFixture::testIsUcs4AsAscii()
     // empty string, bad target encoding
     CPPUNIT_ASSERT(isUcs4(0, kAscii));
     CPPUNIT_ASSERT(isUcs4(nullString, kAscii));
-    CPPUNIT_ASSERT(isUcs4(ucs4String(), kAscii));
+    CPPUNIT_ASSERT(isUcs4(std::u32string(), kAscii));
     CPPUNIT_ASSERT(!isUcs4(0, static_cast<EncodingType>(kUnicode + 1)));
 
     char32_t ucs4AsAsciiGood[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
@@ -1141,7 +1141,7 @@ void StringTestFixture::testToUcs2From8Bit()
                          'e', ' ', 't', 'o', ' ', 't', 'h', 'e', ' ', 'a', 'i', 'd', ' ',
                          'o', 'f', ' ', 't', 'h', 'e', ' ', 'p', 'a', 'r', 't', 'y', '.',
                          0 };
-    ucs2String dest7bit(toUcs2(src7bit));
+    std::u16string dest7bit(toUcs2(src7bit));
     CPPUNIT_ASSERT_EQUAL(strlen(src7bit), dest7bit.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v7bit, dest7bit.c_str(), sizeof(v7bit)));
 
@@ -1152,7 +1152,7 @@ void StringTestFixture::testToUcs2From8Bit()
                                  'n', ' ', 'w', 0xfc,'r', 'd', 'e', ' ', 'w', 'a', 'r', ' ',
                                  'd', 'a', 's', ' ', 'W', 'o', 'r', 't', ' ', 's', 'c', 'h',
                                  'o', 'n', ' ', 'd', 'a', '.', 0 };
-    ucs2String dest2ByteEscapes(toUcs2(src2ByteEscapes));
+    std::u16string dest2ByteEscapes(toUcs2(src2ByteEscapes));
     CPPUNIT_ASSERT_EQUAL(strlen(src2ByteEscapes) - 1, dest2ByteEscapes.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v2ByteEscapes, dest2ByteEscapes.c_str(), sizeof(v2ByteEscapes)));
 
@@ -1160,7 +1160,7 @@ void StringTestFixture::testToUcs2From8Bit()
     char src3ByteEscapes[] = "Oh never \xe4\x85\x96 mind.";
     char16_t v3ByteEscapes[] = { 'O', 'h', ' ', 'n', 'e', 'v', 'e', 'r', ' ', 0x4156,
                                  ' ', 'm', 'i', 'n', 'd', '.', 0 };
-    ucs2String dest3ByteEscapes(toUcs2(src3ByteEscapes));
+    std::u16string dest3ByteEscapes(toUcs2(src3ByteEscapes));
     CPPUNIT_ASSERT_EQUAL(strlen(src3ByteEscapes) - 2, dest3ByteEscapes.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v3ByteEscapes, dest3ByteEscapes.c_str(), sizeof(v3ByteEscapes)));
 
@@ -1190,7 +1190,7 @@ void StringTestFixture::testToUcs2From32Bit()
     // test good Ucs4
     char32_t srcGoodUcs4[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
                                0x122, 0x1345, 'i', 'm', 'e', 0 };
-    ucs2String goodUcs4(toUcs2(srcGoodUcs4));
+    std::u16string goodUcs4(toUcs2(srcGoodUcs4));
     char16_t srcGoodUcs4Check[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
                                0x122, 0x1345, 'i', 'm', 'e', 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(srcGoodUcs4Check, goodUcs4.c_str(), goodUcs4.size() + 1));
@@ -1222,7 +1222,7 @@ void StringTestFixture::testToUtf16From8Bit()
                          'e', ' ', 't', 'o', ' ', 't', 'h', 'e', ' ', 'a', 'i', 'd', ' ',
                          'o', 'f', ' ', 't', 'h', 'e', ' ', 'p', 'a', 'r', 't', 'y', '.',
                          0 };
-    utf16String dest7bit(toUtf16(src7bit));
+    std::u16string dest7bit(toUtf16(src7bit));
     CPPUNIT_ASSERT_EQUAL(strlen(src7bit), dest7bit.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v7bit, dest7bit.c_str(), sizeof(v7bit)));
 
@@ -1233,7 +1233,7 @@ void StringTestFixture::testToUtf16From8Bit()
                                  'n', ' ', 'w', 0xfc,'r', 'd', 'e', ' ', 'w', 'a', 'r', ' ',
                                  'd', 'a', 's', ' ', 'W', 'o', 'r', 't', ' ', 's', 'c', 'h',
                                  'o', 'n', ' ', 'd', 'a', '.', 0 };
-    utf16String dest2ByteEscapes(toUtf16(src2ByteEscapes));
+    std::u16string dest2ByteEscapes(toUtf16(src2ByteEscapes));
     CPPUNIT_ASSERT_EQUAL(strlen(src2ByteEscapes) - 1, dest2ByteEscapes.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v2ByteEscapes, dest2ByteEscapes.c_str(), sizeof(v2ByteEscapes)));
 
@@ -1241,13 +1241,13 @@ void StringTestFixture::testToUtf16From8Bit()
     char src3ByteEscapes[] = "Oh never \xe4\x85\x96 mind.";
     char16_t v3ByteEscapes[] = { 'O', 'h', ' ', 'n', 'e', 'v', 'e', 'r', ' ', 0x4156,
                                  ' ', 'm', 'i', 'n', 'd', '.', 0 };
-    utf16String dest3ByteEscapes(toUtf16(src3ByteEscapes));
+    std::u16string dest3ByteEscapes(toUtf16(src3ByteEscapes));
     CPPUNIT_ASSERT_EQUAL(strlen(src3ByteEscapes) - 2, dest3ByteEscapes.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v3ByteEscapes, dest3ByteEscapes.c_str(), sizeof(v3ByteEscapes)));
 
     // test good (for Utf16) 4-byte escapes (good)
     char src4ByteEscapes0[] = "Straight UTF-8 to things UTF16 would escape: \xf1\x82\x81\x80";
-    utf16String fourByteScapes0(toUtf16(src4ByteEscapes0));
+    std::u16string fourByteScapes0(toUtf16(src4ByteEscapes0));
     char16_t v4ByteEscapes0[] = { 'S', 't', 'r', 'a', 'i', 'g', 'h', 't', ' ', 'U',
                                   'T', 'F', '-', '8', ' ', 't', 'o', ' ', 't', 'h',
                                   'i', 'n', 'g', 's', ' ', 'U', 'T', 'F', '1', '6',
@@ -1255,7 +1255,7 @@ void StringTestFixture::testToUtf16From8Bit()
                                   'a', 'p', 'e', ':', ' ', 0xd8c8, 0xdc40, 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v4ByteEscapes0, fourByteScapes0.c_str(), sizeof(v4ByteEscapes0)));
     char src4ByteEscapes1[] = "UTF-8 of UTF-16 to things UTF16 would escape: \xf0\x90\x80\x80\xf2\x87\xb0\xb0";
-    utf16String fourByteScapes1(toUtf16(src4ByteEscapes1));
+    std::u16string fourByteScapes1(toUtf16(src4ByteEscapes1));
     char16_t v4ByteEscapes1[] = { 'U', 'T', 'F', '-', '8', ' ', 'o', 'f', ' ', 'U',
                                   'T', 'F', '-', '1', '6', ' ', 't', 'o', ' ', 't',
                                   'h', 'i', 'n', 'g', 's', ' ', 'U', 'T', 'F', '1',
@@ -1288,7 +1288,7 @@ void StringTestFixture::testToUtf16From32Bit()
     // test good Ucs4
     char32_t srcGoodUtf16[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
                                0x122, 0x1345, 'i', 'm', 'e', 0 };
-    utf16String goodUtf16(toUtf16(srcGoodUtf16));
+    std::u16string goodUtf16(toUtf16(srcGoodUtf16));
     char16_t srcGoodUtf16Check[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
                                0x122, 0x1345, 'i', 'm', 'e', 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(srcGoodUtf16Check, goodUtf16.c_str(), goodUtf16.size() + 1));
@@ -1296,13 +1296,13 @@ void StringTestFixture::testToUtf16From32Bit()
     // test 32-bit that includes escaped (good)
     char32_t srcUtf16X0[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
                                0x101345, 'i', 'm', 'e', 0 };
-    utf16String goodUtf16X0(toUtf16(srcUtf16X0));
+    std::u16string goodUtf16X0(toUtf16(srcUtf16X0));
     char16_t vUtf16X0[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
                                0xdbc4, 0xdf45, 'i', 'm', 'e', 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(vUtf16X0, goodUtf16X0.c_str(), sizeof(vUtf16X0)));
     char32_t srcUtf16X1[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
                                0xdbc4, 0xdf45, 'i', 'm', 'e', 0 };
-    utf16String goodUtf16X1(toUtf16(srcUtf16X0));
+    std::u16string goodUtf16X1(toUtf16(srcUtf16X0));
     char16_t vUtf16X1[] = { 'N', 'o', 'w', ' ', 'i', 's', ' ', 't', 'h', 'e', ' ', 't',
                                0xdbc4, 0xdf45, 'i', 'm', 'e', 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(vUtf16X1, goodUtf16X1.c_str(), sizeof(vUtf16X1)));
@@ -1327,7 +1327,7 @@ void StringTestFixture::testToUcs4From8Bit()
                          'e', ' ', 't', 'o', ' ', 't', 'h', 'e', ' ', 'a', 'i', 'd', ' ',
                          'o', 'f', ' ', 't', 'h', 'e', ' ', 'p', 'a', 'r', 't', 'y', '.',
                          0 };
-    ucs4String dest7bit(toUcs4(src7bit));
+    std::u32string dest7bit(toUcs4(src7bit));
     CPPUNIT_ASSERT_EQUAL(strlen(src7bit), dest7bit.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v7bit, dest7bit.c_str(), sizeof(v7bit)));
 
@@ -1338,7 +1338,7 @@ void StringTestFixture::testToUcs4From8Bit()
                                  'n', ' ', 'w', 0xfc,'r', 'd', 'e', ' ', 'w', 'a', 'r', ' ',
                                  'd', 'a', 's', ' ', 'W', 'o', 'r', 't', ' ', 's', 'c', 'h',
                                  'o', 'n', ' ', 'd', 'a', '.', 0 };
-    ucs4String dest2ByteEscapes(toUcs4(src2ByteEscapes));
+    std::u32string dest2ByteEscapes(toUcs4(src2ByteEscapes));
     CPPUNIT_ASSERT_EQUAL(strlen(src2ByteEscapes) - 1, dest2ByteEscapes.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v2ByteEscapes, dest2ByteEscapes.c_str(), sizeof(v2ByteEscapes)));
 
@@ -1346,7 +1346,7 @@ void StringTestFixture::testToUcs4From8Bit()
     char src3ByteEscapes[] = "Oh never \xe4\x85\x96 mind.";
     char32_t v3ByteEscapes[] = { 'O', 'h', ' ', 'n', 'e', 'v', 'e', 'r', ' ', 0x4156,
                                  ' ', 'm', 'i', 'n', 'd', '.', 0 };
-    ucs4String dest3ByteEscapes(toUcs4(src3ByteEscapes));
+    std::u32string dest3ByteEscapes(toUcs4(src3ByteEscapes));
     CPPUNIT_ASSERT_EQUAL(strlen(src3ByteEscapes) - 2, dest3ByteEscapes.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v3ByteEscapes, dest3ByteEscapes.c_str(), sizeof(v3ByteEscapes)));
 
@@ -1355,7 +1355,7 @@ void StringTestFixture::testToUcs4From8Bit()
 
     // test good (for Utf16) 4-byte escapes (good)
     char src4ByteEscapes0[] = "Straight UTF-8 to things UTF16 would escape: \xf1\x82\x81\x80";
-    ucs4String fourByteScapes0(toUcs4(src4ByteEscapes0));
+    std::u32string fourByteScapes0(toUcs4(src4ByteEscapes0));
     char32_t v4ByteEscapes0[] = { 'S', 't', 'r', 'a', 'i', 'g', 'h', 't', ' ', 'U',
                                   'T', 'F', '-', '8', ' ', 't', 'o', ' ', 't', 'h',
                                   'i', 'n', 'g', 's', ' ', 'U', 'T', 'F', '1', '6',
@@ -1363,7 +1363,7 @@ void StringTestFixture::testToUcs4From8Bit()
                                   'a', 'p', 'e', ':', ' ', 0x42040, 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v4ByteEscapes0, fourByteScapes0.c_str(), sizeof(v4ByteEscapes0)));
     char src4ByteEscapes1[] = "UTF-8 of UTF-16 to things UTF16 would escape: \xf0\x90\x80\x80\xf2\x87\xb0\xb0";
-    ucs4String fourByteScapes1(toUcs4(src4ByteEscapes1));
+    std::u32string fourByteScapes1(toUcs4(src4ByteEscapes1));
     char32_t v4ByteEscapes1[] = { 'U', 'T', 'F', '-', '8', ' ', 'o', 'f', ' ', 'U',
                                   'T', 'F', '-', '1', '6', ' ', 't', 'o', ' ', 't',
                                   'h', 'i', 'n', 'g', 's', ' ', 'U', 'T', 'F', '1',
@@ -1373,18 +1373,18 @@ void StringTestFixture::testToUcs4From8Bit()
     char src4ByteEscape[] = "You can't switch this: \xf4\x90\x80\x80";
     char32_t v4ByteEscape[] = { 'Y', 'o', 'u', ' ', 'c', 'a', 'n', '\'', 't', ' ', 's', 'w',
                                 'i', 't', 'c', 'h', ' ', 't', 'h', 'i', 's', ':', ' ', 0x110000, 0 };
-    ucs4String dest4ByteEscape(toUcs4(src4ByteEscape));
+    std::u32string dest4ByteEscape(toUcs4(src4ByteEscape));
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v4ByteEscape, dest4ByteEscape.c_str(), sizeof(v4ByteEscape)));
 
     // test good 5- and 6-byte scapes (good)
     char src5ByteEscape[] = "5-byte escape: \xf9\xb7\xa6\x95\x84";
-    ucs4String dest5ByteEscape(toUcs4(src5ByteEscape));
+    std::u32string dest5ByteEscape(toUcs4(src5ByteEscape));
     char32_t v5ByteEscape[] = { '5', '-', 'b', 'y', 't', 'e', ' ', 'e', 's', 'c', 'a', 'p',
                                 'e', ':', ' ', 0x1de6544, 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v5ByteEscape, dest5ByteEscape.c_str(), sizeof(v5ByteEscape)));
 
     char src6ByteEscape[] = "6-byte escape: \xfd\xb7\xa6\x95\x84\x83";
-    ucs4String dest6ByteEscape(toUcs4(src6ByteEscape));
+    std::u32string dest6ByteEscape(toUcs4(src6ByteEscape));
     char32_t v6ByteEscape[] = { '6', '-', 'b', 'y', 't', 'e', ' ', 'e', 's', 'c', 'a', 'p',
                                 'e', ':', ' ', 0x77995103, 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(v6ByteEscape, dest6ByteEscape.c_str(), sizeof(v6ByteEscape)));
@@ -1410,14 +1410,14 @@ void StringTestFixture::testToUcs4From16Bit()
 {
     // test good Ucs2
     char16_t goodUcs2[] = { 'N', 0xf6, 'w', ' ', 'i', 's', ' ', 0x3b8, 'e', ' ', 't', 'i', 'm', 'e', '.', 0 };
-    ucs4String fromGoodUcs2(toUcs4(goodUcs2));
+    std::u32string fromGoodUcs2(toUcs4(goodUcs2));
     char32_t vGoodUcs2[] = { 'N', 0xf6, 'w', ' ', 'i', 's', ' ', 0x3b8, 'e', ' ', 't', 'i', 'm', 'e', '.', 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(vGoodUcs2, fromGoodUcs2.c_str(), sizeof(vGoodUcs2)));
 
     // test good Utf16:
     // test 16-bit that includes escaped (good)
     char16_t goodUtf16[] = { 'N', 0xf6, 'w', ' ', 'i', 's', ' ', 0x3b8, 'e', ' ', 0xd800, 0xdfff, 'i', 'm', 'e', '.', 0 };
-    ucs4String fromGoodUtf16(toUcs4(goodUtf16));
+    std::u32string fromGoodUtf16(toUcs4(goodUtf16));
     char32_t vGoodUtf16[] = { 'N', 0xf6, 'w', ' ', 'i', 's', ' ', 0x3b8, 'e', ' ', 0x010377, 'i', 'm', 'e', '.', 0 };
     CPPUNIT_ASSERT_EQUAL(0, memcmp(vGoodUcs2, fromGoodUcs2.c_str(), sizeof(vGoodUcs2)));
     // test 16-bit that includes half-escaped (bad)

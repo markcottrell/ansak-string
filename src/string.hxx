@@ -30,13 +30,6 @@
 namespace ansak {
 
 ///////////////////////////////////////////////////////////////////////////
-// String Types
-
-using utf16String = std::basic_string<char16_t>;
-using ucs2String = std::basic_string<char16_t>;
-using ucs4String = std::basic_string<char32_t>;
-
-///////////////////////////////////////////////////////////////////////////
 // Enumerations
 
 ///////////////////////////////////////////////////////////////////////////
@@ -71,9 +64,6 @@ enum SourceEncoding {
 
 ///////////////////////////////////////////////////////////////////////////
 // Public Methods
-typedef std::basic_string<char16_t> utf16String;
-typedef std::basic_string<char16_t> ucs2String;
-typedef std::basic_string<char32_t> ucs4String;
 
 ///////////////////////////////////////////////////////////////////////////
 // is<EncodingType> functions
@@ -112,13 +102,13 @@ bool isUtf8
 
 // passim
 
-bool isUtf16(const utf16String& test, EncodingType targetEncoding = kUtf16);
+bool isUtf16(const std::u16string& test, EncodingType targetEncoding = kUtf16);
 bool isUtf16(const char16_t* test, EncodingType targetEncoding = kUtf16);
 
-bool isUcs2(const ucs2String& test, EncodingType targetEncoding = kUcs2);
+bool isUcs2(const std::u16string& test, EncodingType targetEncoding = kUcs2);
 bool isUcs2(const char16_t* test, EncodingType targetEncoding = kUcs2);
 
-bool isUcs4(const ucs4String& test, EncodingType targetEncoding = kUcs4);
+bool isUcs4(const std::u32string& test, EncodingType targetEncoding = kUcs4);
 bool isUcs4(const char32_t* test, EncodingType targetEncoding = kUcs4);
 
 
@@ -141,7 +131,7 @@ bool isUcs4(const char32_t* test, EncodingType targetEncoding = kUcs4);
 
 std::string toUtf8
 (
-    const utf16String&      src         // I - A source basic_string
+    const std::u16string&      src         // I - A source basic_string
 );
 
 std::string toUtf8
@@ -151,23 +141,23 @@ std::string toUtf8
 
 // Passim
 
-std::string toUtf8(const ucs4String& src);
+std::string toUtf8(const std::u32string& src);
 std::string toUtf8(const char32_t* src);
 
-ucs2String toUcs2(const std::string& src);
-ucs2String toUcs2(const char* src);
-ucs2String toUcs2(const ucs4String& src);
-ucs2String toUcs2(const char32_t* src);
+std::u16string toUcs2(const std::string& src);
+std::u16string toUcs2(const char* src);
+std::u16string toUcs2(const std::u32string& src);
+std::u16string toUcs2(const char32_t* src);
 
-utf16String toUtf16(const std::string& src);
-utf16String toUtf16(const char* src);
-utf16String toUtf16(const ucs4String& src);
-utf16String toUtf16(const char32_t* src);
+std::u16string toUtf16(const std::string& src);
+std::u16string toUtf16(const char* src);
+std::u16string toUtf16(const std::u32string& src);
+std::u16string toUtf16(const char32_t* src);
 
-ucs4String toUcs4(const std::string& src);
-ucs4String toUcs4(const char* src);
-ucs4String toUcs4(const utf16String& src);
-ucs4String toUcs4(const char16_t* src);
+std::u32string toUcs4(const std::string& src);
+std::u32string toUcs4(const char* src);
+std::u32string toUcs4(const std::u16string& src);
+std::u32string toUcs4(const char16_t* src);
 
 ///////////////////////////////////////////////////////////////////////////
 // unicodeLength
@@ -187,10 +177,10 @@ unsigned int unicodeLength
 
 // passim
 
-unsigned int unicodeLength(const utf16String& src);
+unsigned int unicodeLength(const std::u16string& src);
 unsigned int unicodeLength(const char16_t* src, unsigned int testLength = 0);
 
-unsigned int unicodeLength(const ucs4String& src);
+unsigned int unicodeLength(const std::u32string& src);
 unsigned int unicodeLength(const char32_t* src, unsigned int testLength = 0);
 
 ///////////////////////////////////////////////////////////////////////////

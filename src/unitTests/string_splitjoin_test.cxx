@@ -67,8 +67,8 @@ void StringSplitJoinTestFixture::testSplitter()
     CPPUNIT_ASSERT_EQUAL(0, strcmp(r0[14].c_str(), "the"));
     CPPUNIT_ASSERT_EQUAL(0, strcmp(r0[15].c_str(), "party"));
 
-    ansak::ucs4String t1(U"Now  is  the  time.");
-    vector<ansak::ucs4String> r1 = ansak::split(t1, U' ');
+    std::u32string t1(U"Now  is  the  time.");
+    vector<std::u32string> r1 = ansak::split(t1, U' ');
     CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7), r1.size());
     CPPUNIT_ASSERT_EQUAL(0, memcmp(r1[0].c_str(), U"Now", 16));
     CPPUNIT_ASSERT(r1[1].empty());

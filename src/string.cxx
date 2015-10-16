@@ -434,7 +434,7 @@ bool isUtf8(const char* test, unsigned int testLength)
 
 //////////////////// Is it (valid) UTF-16, compatible with this encoding?
 
-bool isUtf16(const utf16String& test, EncodingType targetEncoding)
+bool isUtf16(const std::u16string& test, EncodingType targetEncoding)
 {
     return isUtf16(test.c_str(), targetEncoding);
 }
@@ -491,7 +491,7 @@ bool isUtf16(const char16_t* test, EncodingType targetEncoding)
 
 //////////////////// Is it (valid) UCS-2, compatible with this encoding?
 
-bool isUcs2(const ucs2String& test, EncodingType targetEncoding)
+bool isUcs2(const std::u16string& test, EncodingType targetEncoding)
 {
     return isUcs2(test.c_str(), targetEncoding);
 }
@@ -528,7 +528,7 @@ bool isUcs2(const char16_t* test, EncodingType targetEncoding)
 
 //////////////////// Is it (valid) UCS-4, compatible with this encoding?
 
-bool isUcs4(const ucs4String& test, EncodingType targetEncoding)
+bool isUcs4(const std::u32string& test, EncodingType targetEncoding)
 {
     return isUcs4(test.c_str(), targetEncoding);
 }
@@ -591,7 +591,7 @@ string toUtf8(const char16_t* src)
     return result;
 }
 
-string toUtf8(const utf16String& src)
+string toUtf8(const std::u16string& src)
 {
     return toUtf8(src.c_str());
 }
@@ -621,7 +621,7 @@ string toUtf8(const char32_t* src)
     return result;
 }
 
-string toUtf8(const ucs4String& src)
+string toUtf8(const std::u32string& src)
 {
     return toUtf8(src.c_str());
 }
@@ -630,9 +630,9 @@ string toUtf8(const ucs4String& src)
 
 // From char or UTF-8 ////////////////////////////////////
 
-ucs2String toUcs2(const char* src)
+std::u16string toUcs2(const char* src)
 {
-    ucs2String result;
+    std::u16string result;
     if (src && *src)
     {
         for (auto p = src; *p; ++p)
@@ -640,7 +640,7 @@ ucs2String toUcs2(const char* src)
             auto c = decodeUtf8(p);
             if (p == nullptr || c > 0xffff)
             {
-                return ucs2String();
+                return std::u16string();
             }
             else if (c == 0)
             {
@@ -653,23 +653,23 @@ ucs2String toUcs2(const char* src)
     return result;
 }
 
-ucs2String toUcs2(const string& src)
+std::u16string toUcs2(const string& src)
 {
     return toUcs2(src.c_str());
 }
 
 // From UCS-4 ////////////////////////////////////////////
 
-ucs2String toUcs2(const char32_t* src)
+std::u16string toUcs2(const char32_t* src)
 {
-    ucs2String result;
+    std::u16string result;
     if (src && *src)
     {
         for (auto p = src; *p; ++p)
         {
             if (isFirstHalfUtf16(*p) || isSecondHalfUtf16(*p) || *p >= 0x10000)
             {
-                return ucs2String();
+                return std::u16string();
             }
             result.push_back(*p);
         }
@@ -678,7 +678,7 @@ ucs2String toUcs2(const char32_t* src)
     return result;
 }
 
-ucs2String toUcs2(const ucs4String& src)
+std::u16string toUcs2(const std::u32string& src)
 {
     return toUcs2(src.c_str());
 }
@@ -687,9 +687,9 @@ ucs2String toUcs2(const ucs4String& src)
 
 // From char or UTF-8 ////////////////////////////////////
 
-utf16String toUtf16(const char* src)
+std::u16string toUtf16(const char* src)
 {
-    utf16String result;
+    std::u16string result;
     if (src && *src)
     {
         CharacterAdder<char16_t> adder(result);
@@ -698,7 +698,7 @@ utf16String toUtf16(const char* src)
             auto c = decodeUtf8(p);
             if (p == nullptr || c > 0x10ffff)
             {
-                return utf16String();
+                return std::u16string();
             }
             else if (c == 0)
             {
@@ -711,16 +711,16 @@ utf16String toUtf16(const char* src)
     return result;
 }
 
-utf16String toUtf16(const string& src)
+std::u16string toUtf16(const string& src)
 {
     return toUtf16(src.c_str());
 }
 
 // From UCS-4 ////////////////////////////////////////////
 
-utf16String toUtf16(const char32_t* src)
+std::u16string toUtf16(const char32_t* src)
 {
-    utf16String result;
+    std::u16string result;
     if (src && *src)
     {
         CharacterAdder<char16_t> adder(result);
@@ -729,7 +729,7 @@ utf16String toUtf16(const char32_t* src)
             auto c = *p;
             if (p == nullptr || c > 0x10ffff)
             {
-                return utf16String();
+                return std::u16string();
             }
             else if (c == 0)
             {
@@ -742,7 +742,7 @@ utf16String toUtf16(const char32_t* src)
     return result;
 }
 
-utf16String toUtf16(const ucs4String& src)
+std::u16string toUtf16(const std::u32string& src)
 {
     return toUtf16(src.c_str());
 }
@@ -751,9 +751,9 @@ utf16String toUtf16(const ucs4String& src)
 
 // From char or UTF-8 ////////////////////////////////////
 
-ucs4String toUcs4(const char* src)
+std::u32string toUcs4(const char* src)
 {
-    ucs4String result;
+    std::u32string result;
     if (src && *src)
     {
         for (auto p = src; *p; ++p)
@@ -761,7 +761,7 @@ ucs4String toUcs4(const char* src)
             auto c = decodeUtf8(p);
             if (p == nullptr)
             {
-                return ucs4String();
+                return std::u32string();
             }
             else if (c == 0)
             {
@@ -774,16 +774,16 @@ ucs4String toUcs4(const char* src)
     return result;
 }
 
-ucs4String toUcs4(const string& src)
+std::u32string toUcs4(const string& src)
 {
     return toUcs4(src.c_str());
 }
 
 // From UCS-2 or UTF-16 //////////////////////////////////
 
-ucs4String toUcs4(const char16_t* src)
+std::u32string toUcs4(const char16_t* src)
 {
-    ucs4String result;
+    std::u32string result;
     if (src && *src)
     {
         for (auto p = src; *p; ++p)
@@ -794,14 +794,14 @@ ucs4String toUcs4(const char16_t* src)
                 char16_t c1 = *++p; if (c1 == 0) { break; }
                 if (!isSecondHalfUtf16(c1))
                 {
-                    return ucs4String();
+                    return std::u32string();
                 }
                 char32_t c32 = rawDecodeUtf16(c, c1);
                 result.push_back(c32);
             }
             else if (isSecondHalfUtf16(c))
             {
-                return ucs4String();
+                return std::u32string();
             }
             else
             {
@@ -813,7 +813,7 @@ ucs4String toUcs4(const char16_t* src)
     return result;
 }
 
-ucs4String toUcs4(const utf16String& src)
+std::u32string toUcs4(const std::u16string& src)
 {
     return toUcs4(src.c_str());
 }
@@ -919,7 +919,7 @@ unsigned int unicodeLength(const char* src, unsigned int testLength)
 // From UTF-16 ///////////////////////////////////////////
 
 
-unsigned int unicodeLength(const utf16String& src)
+unsigned int unicodeLength(const std::u16string& src)
 {
     return unicodeLength(src.c_str());
 }
@@ -994,7 +994,7 @@ unsigned int unicodeLength(const char16_t* src, unsigned int testLength)
     return lengthTerminated ? 0 : r;
 }
 
-unsigned int unicodeLength(const ucs4String& src)
+unsigned int unicodeLength(const std::u32string& src)
 {
     return unicodeLength(src.c_str());
 }
